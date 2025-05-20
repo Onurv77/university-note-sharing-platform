@@ -2,7 +2,10 @@
     <div>
         <h2>{{ not.title }}</h2>
         <p>{{ not.description }}</p>
-        <a href="{{ not.file.url }}" download>Dosyayı İndir</a>
+        {% if not.file %}
+            <a href="{{ not.file.url }}" download>Dosyayı İndir</a>
+        {% endif %}
         <p><small>Paylaşan: {{ not.user.username }} - {{ not.created_at }}</small></p>
+        <a href="{% url 'yorum_ekle' not.id %}">Yorum Ekle</a>  <!-- ID artık otomatik geliyor -->
     </div>
 {% endfor %}
