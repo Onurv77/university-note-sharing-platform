@@ -8,4 +8,17 @@
         <p><small>Paylaşan: {{ not.user.username }} - {{ not.created_at }}</small></p>
         <a href="{% url 'yorum_ekle' not.id %}">Yorum Ekle</a>  <!-- ID artık otomatik geliyor -->
     </div>
+    <p>Beğeni: <span id="like-count-{{ not.id }}">{{ not.beğeni_sayısı }}</span></p>
+    <button onclick="toggleLike({{ not.id }})">Beğen</button>
+
+    <script>
+        function toggleLike(notId) {
+            fetch(`/notlar/${notId}/like/`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById(`like-count-${notId}`).textContent = data.like_count;
+            });
+        }
+    </script>
+
 {% endfor %}
