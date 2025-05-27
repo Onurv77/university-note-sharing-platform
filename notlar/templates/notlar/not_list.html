@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Notlar - Üniversite Not Paylaşımı</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 800px;
+        }
+
+        .note-box {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fafafa;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .note-box h2 {
+            margin: 0;
+            color: #5a4634;
+        }
+
+        .note-box p {
+            margin: 5px 0;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            background-color: #8a6f4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #715940;
+        }
+
+        .likes {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Paylaşılan Notlar</h1>
+    <div class="container">
+        {% for not in notlar %}
+        <div class="note-box">
+            <h2>{{ not.title }}</h2>
+            <p>{{ not.description }}</p>
+            {% if not.file %}
+                <a class="btn" href="{{ not.file.url }}" download>Dosyayı İndir</a>
+            {% endif %}
+            <p><small>Paylaşan: {{ not.user.username }} - {{ not.created_at }}</small></p>
+            
+            <div class="actions">
+                <a class="btn" href="{% url 'yorum_ekle' not.id %}">Yorum Ekle</a>
+                <p class="likes">Beğeni: <span id="like-count-{{ not.id }}">{{ not.beğeni_sayısı }}</span></p>
+                <button class="btn" onclick="toggleLike({{ not.id }})">Beğen</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function toggleLike(notId) {
+            fetch(`/notlar/${notId}/like/`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById(`like-count-${notId}`).textContent = data.like_count;
+            });
+        }
+    </script>
+</body>
+</html>

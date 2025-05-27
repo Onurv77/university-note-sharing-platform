@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Not Paylaş - Üniversite Not Paylaşımı</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Playfair Display', serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: left;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 26px;
+            color: #5a4634;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            text-align: left;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #8a6f4d;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #715940;
+        }
+
+        .errorlist, p[style="color:red"] {
+            color: red;
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Not Paylaş</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% for field in form %}
+            <div class="form-group">
+                {{ field.label_tag }}
+                {{ field }}
+                {% for error in field.errors %}
+                    <p style="color:red">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <button type="submit">Notu Paylaş</button>
+        </form>
+    </div>
+</body>
+</html>

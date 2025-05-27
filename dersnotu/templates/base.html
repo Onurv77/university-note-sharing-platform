@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Üniversite Not Paylaşımı</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Playfair Display', serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .header {
+            position: absolute;
+            top: 30px;
+            font-size: 32px;
+            font-weight: bold;
+            color: #5a4634;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 25px;
+            background-color: #8a6f4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #715940;
+        }
+    </style>
+</head>
+<body>
+    <h1 class="header">Hoşgeldiniz!</h1> 
+    <div class="container">
+        {% if user.is_authenticated %}
+            <h2>Merhaba, {{ user.username }}!</h2>
+            <a class="btn" href="{% url 'not_list' %}">Notlara Gir</a>  <!-- Yeni buton eklendi -->
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button class="btn" type="submit">Çıkış Yap</button>
+            </form>
+        {% else %}
+            <h2>Üniversite Not Paylaşımı Platformu</h2>
+            <a class="btn" href="{% url 'login' %}">Giriş Yap</a>
+            <a class="btn" href="{% url 'register' %}">Kayıt Ol</a>
+        {% endif %}
+    </div>
+</body>
+</html>

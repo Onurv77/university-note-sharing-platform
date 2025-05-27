@@ -1,0 +1,1 @@
+<p>Çıkış yaptınız. Tekrar giriş yapmak için <a href="{% url 'login' %}">buraya tıklayın</a>.</p>
