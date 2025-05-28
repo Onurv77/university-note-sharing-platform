@@ -1,1 +1,1 @@
-web: gunicorn dersnotu.wsgi
+web: gunicorn university-note-sharing-platform-main.wsgi
