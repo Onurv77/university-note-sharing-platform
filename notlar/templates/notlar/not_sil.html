@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Not Sil - {{ not_obj.title }}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Playfair Display', serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h2 {
+            color: #5a4634;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            background-color: #8a6f4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background-color: #715940;
+        }
+
+        .btn-delete {
+            background-color: red;
+        }
+
+        .btn-delete:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Notu Sil: {{ not_obj.title }}</h2>
+        <p>Bu notu silmek istediğinize emin misiniz?</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <button class="btn btn-delete" type="submit">Evet, Sil</button>
+        </form>
+
+        <a href="{% url 'not_list' %}" class="btn">Hayır, Geri Dön</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ not_obj.title }}</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: 'Playfair Display', serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            width: 600px;
+            text-align: left;
+        }
+
+        h1 {
+            text-align: center;
+            color: #5a4634;
+        }
+
+        .comments {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fafafa;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #8a6f4d;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+        }
+
+        button:hover {
+            background-color: #715940;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ not_obj.title }}</h1>
+        <p>{{ not_obj.description }}</p>
+
+        {% if not_obj.file %}
+            <a class="btn" href="{{ not_obj.file.url }}" download>Dosyayı İndir</a>
+        {% endif %}
+
+        <p><small>Paylaşan: {{ not_obj.user.username }} - {{ not_obj.created_at }}</small></p>
+
+        <h2>Yorumlar</h2>
+        <div class="comments">
+            {% for yorum in yorumlar %}
+                <div class="comment">
+                    <p><strong>{{ yorum.user.username }}</strong>: {{ yorum.text }}</p>
+                    <p><small>{{ yorum.created_at }}</small></p>
+                </div>
+            {% empty %}
+                <p>Henüz yorum yok.</p>
+            {% endfor %}
+        </div>
+
+        <a href="{% url 'yorum_ekle' not_obj.id %}">
+            <button>Yorum Ekle</button>
+        </a>
+    </div>
+</body>
+</html>

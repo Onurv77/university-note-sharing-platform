@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Not, Like
+from .models import Not, Like, Yorum
 from .forms import NotForm, YorumForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -51,3 +51,25 @@ def like_not(request, not_id):
 
     like_count = not_obj.likes.count()
     return JsonResponse({'like_count': like_count})
+
+
+def not_detay(request, not_id):
+    not_obj = get_object_or_404(Not, pk=not_id)  # Bu nota ait yorumları getir
+
+    yorumlar = Yorum.objects.filter(not_obj=not_obj)  # Yorumları çekiyoruz
+
+    return render(request, "notlar/not_detay.html", {"not_obj": not_obj, "yorumlar": yorumlar})
+
+@login_required
+def not_sil(request, not_id):
+    not_obj = get_object_or_404(Not, id=not_id)
+
+    if not_obj.user != request.user:
+        return redirect('not_list')  
+
+    if request.method == "POST":
+        not_obj.delete()
+        return redirect('not_list')  
+
+    # Eğer kullanıcı sadece sayfayı açıyorsa, silme işlemi gerçekleşmeden önce onay isteyelim
+    return render(request, "notlar/not_sil.html", {"not_obj": not_obj})

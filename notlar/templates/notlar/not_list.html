@@ -15,6 +15,38 @@
             align-items: center;
         }
 
+        .top-bar {
+            width: 800px;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            flex: 1;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .btn-add {
+            padding: 10px 15px;
+            background-color: #8a6f4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-add:hover {
+            background-color: #715940;
+        }
+
         .container {
             background: white;
             padding: 20px;
@@ -42,9 +74,10 @@
         }
 
         .actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        display: flex;
+        justify-content: flex-start;  /* Butonları sola hizala */
+        align-items: center;
+        gap: 10px;  /* Butonlar arasındaki boşluğu azalt */
         }
 
         .btn {
@@ -61,6 +94,14 @@
             background-color: #715940;
         }
 
+        .delete-btn {
+            background-color: red;
+        }
+
+        .delete-btn:hover {
+            background-color: darkred;
+        }
+
         .likes {
             font-size: 14px;
             color: #333;
@@ -69,11 +110,20 @@
 </head>
 <body>
     <h1>Paylaşılan Notlar</h1>
-    <div class="container">
-        {% for not in notlar %}
-        <div class="note-box">
-            <h2>{{ not.title }}</h2>
-            <p>{{ not.description }}</p>
+
+    <!-- Not Ekle Butonu ve Arama Kutusu -->
+    <div class="top-bar">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Not arayın..." onkeyup="searchNotes()">
+        </div>
+        <a class="btn-add" href="{% url 'not_ekle' %}">Not Ekle</a>
+    </div>
+
+    <div class="container" id="notesContainer">
+    {% for not in notlar %}
+        <div class="note-box" data-title="{{ not.title }}">
+            <h2><a href="{% url 'not_detay' not.id %}" class="note-link">{{ not.title }}</a></h2> <!-- Not başlığı artık tıklanabilir -->
+            <!--<p>{{ not.description }}</p>-->
             {% if not.file %}
                 <a class="btn" href="{{ not.file.url }}" download>Dosyayı İndir</a>
             {% endif %}
@@ -81,12 +131,18 @@
             
             <div class="actions">
                 <a class="btn" href="{% url 'yorum_ekle' not.id %}">Yorum Ekle</a>
-                <p class="likes">Beğeni: <span id="like-count-{{ not.id }}">{{ not.beğeni_sayısı }}</span></p>
                 <button class="btn" onclick="toggleLike({{ not.id }})">Beğen</button>
+                <p class="likes">Beğeni: <span id="like-count-{{ not.id }}">{{ not.beğeni_sayısı }}</span></p>
+
+                {% if not.user == request.user %}
+                    <a href="{% url 'not_sil' not.id %}" class="btn delete-btn">Sil</a>
+                {% endif %}
             </div>
+
         </div>
-        {% endfor %}
+    {% endfor %}
     </div>
+
 
     <script>
         function toggleLike(notId) {
@@ -94,6 +150,20 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById(`like-count-${notId}`).textContent = data.like_count;
+            });
+        }
+
+        function searchNotes() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let notes = document.querySelectorAll(".note-box");
+
+            notes.forEach(note => {
+                let title = note.getAttribute("data-title").toLowerCase();
+                if (title.includes(input)) {
+                    note.style.display = "block";
+                } else {
+                    note.style.display = "none";
+                }
             });
         }
     </script>
