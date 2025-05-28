@@ -44,20 +44,38 @@
             margin-bottom: 10px;
         }
 
-        button {
+        .button {
+            display: block; /* Blok düzeyinde göster */
+            margin: 0 auto; /* Yatay olarak merkezde hizala */
+            padding: 10px 15px;
             background-color: #8a6f4d;
             color: white;
             border: none;
-            padding: 10px;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%;
+            text-decoration: none;
             text-align: center;
+            font-size: 16px;
         }
 
-        button:hover {
+        .button:hover {
             background-color: #715940;
         }
+
+        .btn {
+            padding: 8px 12px;
+            background-color: #8a6f4d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #715940;
+        }
+
     </style>
 </head>
 <body>
@@ -66,7 +84,8 @@
         <p>{{ not_obj.description }}</p>
 
         {% if not_obj.file %}
-            <a class="btn" href="{{ not_obj.file.url }}" download>Dosyayı İndir</a>
+            <a href="{{ not_obj.file.url }}" download class="button">Dosyayı İndir</a>
+
         {% endif %}
 
         <p><small>Paylaşan: {{ not_obj.user.username }} - {{ not_obj.created_at }}</small></p>
@@ -84,7 +103,7 @@
         </div>
 
         <a href="{% url 'yorum_ekle' not_obj.id %}">
-            <button>Yorum Ekle</button>
+            <button class="btn">Yorum Ekle</button>
         </a>
     </div>
 </body>

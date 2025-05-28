@@ -106,6 +106,16 @@
             font-size: 14px;
             color: #333;
         }
+        .note-link {
+        text-decoration: none;  /* Link görünümü kaldır */
+        color: inherit;  /* Metin rengini koru */
+        display: block;  /* Tüm div'i kapsayıcı hale getir */
+        }
+
+        .note-link:hover .note-box {
+            background-color: #e8e8e8;  /* Hover efekti ekleyerek vurgu yap */
+        }
+
     </style>
 </head>
 <body>
@@ -121,25 +131,28 @@
 
     <div class="container" id="notesContainer">
     {% for not in notlar %}
-        <div class="note-box" data-title="{{ not.title }}">
-            <h2><a href="{% url 'not_detay' not.id %}" class="note-link">{{ not.title }}</a></h2> <!-- Not başlığı artık tıklanabilir -->
-            <!--<p>{{ not.description }}</p>-->
-            {% if not.file %}
-                <a class="btn" href="{{ not.file.url }}" download>Dosyayı İndir</a>
-            {% endif %}
-            <p><small>Paylaşan: {{ not.user.username }} - {{ not.created_at }}</small></p>
-            
-            <div class="actions">
-                <a class="btn" href="{% url 'yorum_ekle' not.id %}">Yorum Ekle</a>
-                <button class="btn" onclick="toggleLike({{ not.id }})">Beğen</button>
-                <p class="likes">Beğeni: <span id="like-count-{{ not.id }}">{{ not.beğeni_sayısı }}</span></p>
+        <a href="{% url 'not_detay' not.id %}" class="note-link">
 
-                {% if not.user == request.user %}
-                    <a href="{% url 'not_sil' not.id %}" class="btn delete-btn">Sil</a>
-                {% endif %}
+            <div class="note-box" data-title="{{ not.title }}">
+                <h2>{{ not.title }}</h2> <!-- Not başlığı artık tıklanabilir -->
+                <!--<p>{{ not.description }}</p>
+                {% if not.file %}
+                    <a class="btn" href="{{ not.file.url }}" download>Dosyayı İndir</a>
+                {% endif %}-->
+                <p><small>Paylaşan: {{ not.user.username }} - {{ not.created_at }}</small></p>
+                
+                <div class="actions">
+                    <a class="btn" href="{% url 'yorum_ekle' not.id %}">Yorum Ekle</a>
+                    <button class="btn" onclick="toggleLike({{ not.id }})">Beğen</button>
+                    <p class="likes">Beğeni: <span id="like-count-{{ not.id }}">{{ not.beğeni_sayısı }}</span></p>
+
+                    {% if not.user == request.user %}
+                        <a href="{% url 'not_sil' not.id %}" class="btn delete-btn">Sil</a>
+                    {% endif %}
+                </div>
+
             </div>
-
-        </div>
+        </a>
     {% endfor %}
     </div>
 
