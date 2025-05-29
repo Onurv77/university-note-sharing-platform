@@ -51,8 +51,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'notlar',
     'users',
+    "storages",
 
 ]
+
+AWS_ACCESS_KEY_ID = "S3_ACCESS_KEY"
+AWS_SECRET_ACCESS_KEY = "S3_SECRET_KEY"
+AWS_STORAGE_BUCKET_NAME = "my-bucket-name"
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -64,6 +72,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 ROOT_URLCONF = 'dersnotu.urls'
 

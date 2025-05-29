@@ -84,9 +84,9 @@
         <p>{{ not_obj.description }}</p>
 
         {% if not_obj.file %}
-            <a href="{{ not_obj.file.url }}" download class="button">Dosyayı İndir</a>
-
+            <a href="{{ not_obj.file.url }}" class="button" download>Dosyayı İndir</a>
         {% endif %}
+
 
         <p><small>Paylaşan: {{ not_obj.user.username }} - {{ not_obj.created_at }}</small></p>
 

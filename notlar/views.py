@@ -19,11 +19,16 @@ def not_ekle(request):
             not_obj = form.save(commit=False)
             not_obj.user = request.user  # Kullanıcıyı ilişkilendiriyoruz
             not_obj.save()
-            return redirect('not_list')  # Başarıyla ekledikten sonra listeye yönlendiriyoruz
+
+            # Dosyanın gerçekten kaydedildiğini kontrol et
+            print(f"Yüklenen dosya: {not_obj.file}")  
+
+            return redirect("not_list")  # Başarıyla ekledikten sonra listeye yönlendiriyoruz
     else:
         form = NotForm()
-    
-    return render(request, 'notlar/not_ekle.html', {'form': form})
+
+    return render(request, "notlar/not_ekle.html", {"form": form})
+
 
 @login_required
 def yorum_ekle(request, not_id):
